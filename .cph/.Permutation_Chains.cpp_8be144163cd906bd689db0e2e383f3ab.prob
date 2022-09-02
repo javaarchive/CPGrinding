@@ -1,0 +1,1 @@
+{"name":"Local: Permutation_Chains","url":"/workspace/CPGrinding/Permutation_Chains.cpp","tests":[{"id":1662136155643,"input":"2\n2\n3","output":"2\n1 2\n2 1\n3\n1 2 3\n3 2 1\n3 1 2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/workspace/CPGrinding/Permutation_Chains.cpp","group":"local","local":true}

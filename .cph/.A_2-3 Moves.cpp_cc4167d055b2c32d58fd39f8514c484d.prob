@@ -1,0 +1,1 @@
+{"name":"Local: A_2-3 Moves","url":"/workspace/CPGrinding/A_2-3 Moves.cpp","tests":[{"id":1662133695542,"input":"4\n1\n3\n4\n12","output":"2\n1\n2\n4"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/workspace/CPGrinding/A_2-3 Moves.cpp","group":"local","local":true}
