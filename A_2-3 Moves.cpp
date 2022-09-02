@@ -15,6 +15,7 @@ void solve(){
         }else{
             // +3-2
             ans += 2;
+            
         }
     }else if(N % 3 == 2){
         ans += 1;
