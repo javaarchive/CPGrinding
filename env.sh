@@ -1,0 +1,1 @@
+alias g++usaco="g++ -Wfloat-equal -Woverflow -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wshadow -O2 -Wunused-parameter -Wunused-but-set-parameter -fsanitize=address -g -pg -D_GLIBCXX_DEBUG "
