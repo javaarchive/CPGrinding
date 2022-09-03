@@ -1,6 +1,14 @@
 {
     "files.associations": {
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "charconv": "cpp",
+        "random": "cpp",
+        "numeric": "cpp",
+        "ratio": "cpp",
+        "utility": "cpp"
     },
     "editor.cursorSmoothCaretAnimation": true,
     "workbench.list.smoothScrolling": true,
