@@ -3,12 +3,13 @@
 #define MAXN 102
 
 using namespace std;
-
 int N, T;
 string str;
 int lengths[MAXN];
 
+
 void solve(){
+    
     cin >> str;
     T = str.length();
     cin >> N;
@@ -16,6 +17,7 @@ void solve(){
     //          substr id  pos
     // vector<pair<int       ,   int>> choices;
     vector<int> insertables[MAXT]; 
+    bool completeness[MAXT] = {false};
     for(int i = 0; i < N; i ++){
         string substr;
         cin >> substr;
@@ -35,7 +37,17 @@ void solve(){
                 // cout << substr << " matched at " << j << endl;
                 // choices.push_back(make_pair(i,j));
                 insertables[j].push_back(i); 
+                for(int k = 0; k < K; k ++){
+                    completeness[j + k] = true;
+                }
             }
+        }
+    }
+
+    for(int i = 0; i < T; i ++){
+        if(!completeness[i]){
+            cout << -1 << endl;
+            return;
         }
     }
 
@@ -50,17 +62,17 @@ void solve(){
     fill(howDidWeGetHereSIDs, howDidWeGetHereSIDs + MAXT, INT32_MAX);
     howWeGetHere[0] = 0; // base
     for(int i = 0; i < T; i ++){
-        int best = 0;
+        // int best = 0;
         // for(int j = 0; j <= i; j ++){
             for(int si: insertables[i]){// - j]){
                 int len = lengths[si];
                 int dest = i + len; //i + len - j; // we went back j steps
-                int newVal = howWeGetHere[i] + 1;
+                int newVal = howWeGetHere[i] + 1; // build off previous + 1
                 for(int k = 1; k <= len; k ++){
                     int writeTo = i + k;
                     if(writeTo > T) break; // out of bounds write
                     if(howWeGetHere[writeTo] > newVal){
-                        // cout << "DP " << i << " -> " << writeTo << " writing " << newVal << endl;
+                        // cout << "DP " << i << " -> " << writeTo << " writing " << newVal << " used " << substrs[si] << endl;
                         howDidWeGetHere[writeTo] = i;
                         howDidWeGetHereSIDs[writeTo] = si;
                         howWeGetHere[writeTo] = newVal;
@@ -70,10 +82,10 @@ void solve(){
         // }
     }
 
-    if(howWeGetHere[T] == INT32_MAX){
+    /*if(howWeGetHere[T] == INT32_MAX){
         cout << -1 << endl;
         return;
-    }
+    }*/
 
     cout << howWeGetHere[T] << endl;
     // we trace cause I did horrible design
@@ -84,6 +96,7 @@ void solve(){
         cout << howDidWeGetHereSIDs
     }
     cout << endl;*/
+    // rewind
     while(howDidWeGetHere[index] != INT32_MAX){
         cout << howDidWeGetHereSIDs[index] + 1 << " " << howDidWeGetHere[index] + 1 << endl;
         // cout << "INDEX " << index << endl;
