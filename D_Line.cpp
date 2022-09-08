@@ -4,42 +4,59 @@ using namespace std;
 void solve(){
     int N;
     cin >> N;
-    int R = 0, L = 0;
     string line;
     cin >> line;
-    for(int i = 0; i < N; i ++){
-        if(line[i] == 'R'){
-            R ++;
-        }else{
-            L ++;
-        }
-    }
     // long long lowest = min(R,L);
     // long long highest = max(R,L);
     // long long largest = -1;
     // cout << "LOWEST " << lowest << " HIGHEST " << highest << endl;
-    for(int k = 1; k <= N; k ++){
-        // cout << "K = " << k << endl;
-        long long ans = 0;
-        if(k <= lowest){
-            // (lowest - k) * (highest + k);
-            long long newLowest = lowest - k;
-            long long newHighest = highest + k;
-
-            // cout << "new low: " << newLowest << " and new high: " << newHighest << endl; 
-
-            long long lValue = (newLowest * (newLowest + 1))/2;
-            long long rValue = (newHighest * (newHighest + 1))/2;
-
-            cout << lValue << " and " << rValue << endl;
-
-            ans = lValue + rValue;
-
-            largest = max(largest,ans);
+    vector<pair<long long,int>> choices;
+    long long ans = 0LL;
+    for(int i = 0; i < N; i ++){
+        //   +++ index
+        pair<long long,int  > choice;
+        const long long RIGHT = ((N - 1) - (i + 1)) + 1;
+        const long long LEFT = i;
+        if(line[i] == 'R'){
+            // right
+            long long diff = LEFT - RIGHT;
+            choice.first = diff;
+            choice.second = i;
+            ans = ans + (long long) RIGHT;
         }else{
-            ans = largest;
+            // left
+            long long diff = RIGHT - LEFT;
+            choice.first = diff;
+            choice.second = i;
+            ans = ans + (long long) LEFT;
         }
-        cout << "^" << ans; 
+        choices.push_back(choice);
+    }
+    sort(choices.begin(),choices.end());
+    // highest first
+    reverse(choices.begin(),choices.end());
+
+    // cout << "OK" << endl;
+
+    long long best = INT32_MIN;
+
+    // cout << "OUT ";
+    // cout << "N " << N << endl;
+    // cout << "INIT " << ans << endl;
+
+    for(int k = 0; k < N; k ++){
+        // cout << "BEFORE " << k << endl;
+        auto p = choices[k];
+        // cout << "CHANGE " << p.first << endl;
+        // cout << "AFTER" << endl;
+        // it gets worse from now
+        if(p.first < 0){ // keyword at most
+            cout << best << " ";
+            continue;
+        }
+        ans = ans + (long long) p.first;
+        best = max(best, ans);
+        cout << best << " ";
     }
     cout << endl;
 }
