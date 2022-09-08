@@ -14,23 +14,25 @@ void solve(){
     long long ans = 0LL;
     for(int i = 0; i < N; i ++){
         //   +++ index
-        pair<long long,int  > choice;
         const long long RIGHT = ((N - 1) - (i + 1)) + 1;
         const long long LEFT = i;
         if(line[i] == 'R'){
             // right
+            pair<long long, int> choice;
             long long diff = LEFT - RIGHT;
             choice.first = diff;
             choice.second = i;
             ans = ans + (long long) RIGHT;
+            choices.push_back(choice);
         }else{
+            pair<long long, int> choice;
             // left
             long long diff = RIGHT - LEFT;
             choice.first = diff;
             choice.second = i;
             ans = ans + (long long) LEFT;
+            choices.push_back(choice);
         }
-        choices.push_back(choice);
     }
     sort(choices.begin(),choices.end());
     // highest first
@@ -47,6 +49,7 @@ void solve(){
     for(int k = 0; k < N; k ++){
         // cout << "BEFORE " << k << endl;
         auto p = choices[k];
+        best = max(best, ans);
         // cout << "CHANGE " << p.first << endl;
         // cout << "AFTER" << endl;
         // it gets worse from now
