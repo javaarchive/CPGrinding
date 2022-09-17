@@ -16,17 +16,17 @@ pair<int,int> parse(string initTime){
 }
 
 bool isPal(){
-    int digit1 = initTimePair.first / 10;
-    int digit2 = initTimePair.first % 10;
-    int digit3 = initTimePair.second / 10;
-    int digit4 = initTimePair.second % 10;
+    int digit1 = floor(cur.first / 10);
+    int digit2 = cur.first % 10;
+    int digit3 = floor(cur.second / 10);
+    int digit4 = cur.second % 10;
     
     return (digit1 == digit4) && (digit2 == digit3);
 }
 
-void advanceTime(int ms){
-    cur.second += ms;
-    int hours = floor(cur.second/60); //extra floor yes
+void advanceTime(int minutes){
+    cur.second += minutes;
+    int hours = floor(cur.second / 60); //extra floor yes
     cur.second = cur.second % 60;
     cur.first += hours;
     cur.first = cur.first % 24;
@@ -46,11 +46,11 @@ void solve(){
         if(initTimePair == cur && i != 0){
             break; // stop counting
         }
+        // cout << cur.first << ":" << cur.second << endl;
         if(isPal()){
             ans ++;
         }
         advanceTime(mins);
-        
     }
     
     cout << ans << endl;
