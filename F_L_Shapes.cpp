@@ -4,95 +4,88 @@
 using namespace std;
 
 char grid[MAXNM][MAXNM];
+bool visited[MAXNM][MAXNM];
 int N, M;
 
-struct L{
-    pair<int,int> origin;
-    pair<int,int> legA;
-    pair<int,int> legB;
-};
+int compID;
 
-int checkXYnotFilled(int x, int y){
-    if(0 <= x && x < N && 0 <= y && y < M){ 
-        return grid[x][y] != '*';
-    }
-    return true;
-}
+int dirX[8] = {-1,1,0,0,-1,1,-1,1};
+int dirY[8] = {0,0,-1,1 ,-1,1,1,-1};
 
 void solve(){
     
     cin >> N >> M;
     string line;
+    compID = 0;
     for(int i = 0; i < N; i ++){
         cin >> line;
         for(int j = 0; j < M; j ++){
             grid[i][j] = line[j];
-        }
-    }
-    bool works = true;
-    vector<L> lShapes;
-    for(int i = 0; i < N - 1; i ++){
-        for(int j = 0; j < M - 1; j ++){
-            // query 4
-            int count = 0;
-            count += grid[i][j] == '*';
-            count += grid[i + 1][j] == '*';
-            count += grid[i][j + 1] == '*';
-            count += grid[i + 1][j + 1] == '*';
-            if(count == 3){
-                // L shape for section
-                L lShape;
-                if(grid[i][j] == '.'){
-                    lShape.origin = make_pair(i + 1, j + 1);
-                    lShape.legA = make_pair(i, j + 1);
-                    lShape.legB = make_pair(i + 1, j);
-                }else if(grid[i + 1][j] == '.'){
-                    lShape.origin = make_pair(i, j + 1);
-                    lShape.legA = make_pair(i + 1, j + 1);
-                    lShape.legB = make_pair(i, j);
-                }else if(grid[i][j + 1] == '.'){
-                    lShape.origin = make_pair(i + 1, j);
-                    lShape.legA = make_pair(i + 1, j + 1);
-                    lShape.legB = make_pair(i, j);
-                }else if(grid[i + 1][j + 1] == '.'){
-                    lShape.origin = make_pair(i, j);
-                    lShape.legA = make_pair(i, j + 1);
-                    lShape.legB = make_pair(i + 1, j);
-                }
-                lShapes.push_back(lShape);
-            }else if(count == 4){
-                // wtf
-                // touching
-                works = false;
-                break;
-            }
-        }
-        if(!works){
-            break;
+            visited[i][j] = false;
         }
     }
 
-    if(works){
-        // so far works
-        for(L lShape: lShapes){
-            auto origin = lShape.origin;
-            auto legA = lShape.legA;
-            auto legB = lShape.legB;
-            int aX = lShape.legA.first - lShape.origin.first;
-            int aY = lShape.legA.second - lShape.origin.second;
-            int bX = lShape.legB.first - lShape.origin.first;
-            int bY = lShape.legB.second - lShape.origin.second;
-            //
-            //
-            // 
-            // 000
-            // 0*00
-            // 0**0
-            // 0000
-            if(!checkXYnotFilled(origin + legA)){
-                works = false;
-                break;
+    bool works = true;
+
+    vector<vector<pair<int,int>>> components;
+    for(int i = 0 ; i < N; i ++){
+        for(int j = 0; j < M; j ++){
+            if(!visited[i][j] && grid[i][j] == '*'){
+                // dfs time
+                stack<pair<int,int>> next;
+                vector<pair<int,int>> comp;
+                next.push(make_pair(i,j));
+                while(!next.empty()){
+                    pair<int,int> pos = next.top();
+                    next.pop();
+                    comp.push_back(pos);
+                    // redundant but for first
+                    visited[pos.first][pos.second] = true;
+                    for(int k = 0; k < 8; k ++){
+                        int newX = pos.first + dirX[k];
+                        int newY = pos.second + dirY[k];
+                        
+                        if(0 <= newX && newX < N){
+                            if(0 <= newY && newY < M){
+                                if(!visited[newX][newY] && grid[newX][newY] == '*'){
+                                    // add
+                                    visited[newX][newY] = true;
+                                    next.push(make_pair(newX, newY));
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                components.push_back(comp);
+                compID ++;
             }
+        }
+    }
+
+    // Iterate every component and check length
+    for(vector<pair<int,int>> comp: components){
+        if(comp.size() != 3){
+            works = false;
+            // cout << "Size test failed " << comp.size() << endl; 
+            break;
+        }
+        // Calculate area
+        int minX = INT32_MAX;
+        int minY = INT32_MAX;
+        int maxX = -1;
+        int maxY = -1;
+        for(pair<int,int> pos: comp){
+            minX = min(pos.first, minX);
+            maxX = max(pos.first, maxX);
+            minY = min(pos.second, minY);
+            maxY = max(pos.second, maxY);
+        }
+        // area must be 4 in a square 2x2
+        if((maxX - minX) != 1 || (maxY - minY) != 1){
+            works = false;
+            // cout << "Area test failed " << minX << "," << minY << " < " << maxX << "," << maxY << endl;
+            break;
         }
     }
 
@@ -103,7 +96,7 @@ void solve(){
 int main(int argc, char const *argv[])
 {
     int T;
-    cin >> T:
+    cin >> T;
     while(T --) solve();
     return 0;
 }
