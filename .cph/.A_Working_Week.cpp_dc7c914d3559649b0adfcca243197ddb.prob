@@ -1,0 +1,1 @@
+{"name":"Local: A_Working_Week","url":"/workspace/CPGrinding/A_Working_Week.cpp","tests":[{"id":1664724107783,"input":"3\n6\n10\n1033\n","output":"0\n1\n342"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/workspace/CPGrinding/A_Working_Week.cpp","group":"local","local":true}
