@@ -9,7 +9,16 @@
         "numeric": "cpp",
         "ratio": "cpp",
         "utility": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "cmath": "cpp",
+        "optional": "cpp",
+        "istream": "cpp",
+        "system_error": "cpp",
+        "functional": "cpp",
+        "regex": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "variant": "cpp"
     },
     "editor.cursorSmoothCaretAnimation": true,
     "workbench.list.smoothScrolling": true,
