@@ -1,0 +1,1 @@
+{"name":"Local: 3_Paint","url":"/media/raymond/2656B9085E2F2A27/Coding/CPGrinding/3_Paint.cpp","tests":[{"id":1669509295681,"input":"3\n30 0 0 2 5 10\n21 9 10 4 1 2\n9 6 6 50 4 8","output":"0\n47\n96"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/media/raymond/2656B9085E2F2A27/Coding/CPGrinding/3_Paint.cpp","group":"local","local":true}

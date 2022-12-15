@@ -18,7 +18,9 @@
         "regex": "cpp",
         "tuple": "cpp",
         "type_traits": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "complex": "cpp",
+        "valarray": "cpp"
     },
     "editor.cursorSmoothCaretAnimation": true,
     "workbench.list.smoothScrolling": true,

@@ -63,3 +63,4 @@ DevPack
 *.vsix
 
 ssh.key
+*.s
