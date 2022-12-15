@@ -40,7 +40,6 @@ int cyclDist(int bound, int a, int b){
         //      dist before cycle inclusive of cycle + distance after cycle
         return (bound - a) + b; 
     }
-
 }
 
 void solve(){
