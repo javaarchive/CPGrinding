@@ -19,6 +19,10 @@ int uniqTransforms;
 
 set<char> cycleCheckVisited;
 
+int cycleID = 1;
+int nodeToCID[MAXN];
+bool cidExtensionFound[MAXN];
+
 void solve(){
     cycles.clear();
     edges.clear();
@@ -61,7 +65,9 @@ void solve(){
     int MAX_CYCLE_LENGTH = charset.length();
     // Now we persue the cycles
     for(char startLetter: charset){
-        if(cycleCheckVisited.count(startLetter)) continue;
+        if(cycleCheckVisited.count(startLetter)){
+            continue;
+        }
         char cur = startLetter;
         // Skip dead end
         if(charEdgesMap[startLetter].size() == 0){
@@ -73,9 +79,14 @@ void solve(){
             continue;
         }
         for(int i = 0; i < MAX_CYCLE_LENGTH; i ++){
-            /*if(cycleCheckVisited.count(cur)){
-                break;
-            }*/
+            if(cycleCheckVisited.count(cur) && i > 0 && !cycleCheckVisited.count(startLetter)){ // we started not on a cycle somehow got into a cycle
+                int cid = nodeToCID[cur];
+                if(!cidExtensionFound[cid]){
+                    ops -= 1; // we don't need an extra temporary letter after all
+                    usableTemporaryLetters ++; // ^
+                    cidExtensionFound[cid] = true;
+                }
+            }
             if(charEdgesMap[cur].size() == 0){
                 // dead end
                 break;
@@ -89,32 +100,30 @@ void solve(){
                 // Cycle found
                 // cout << nextl << " Cycle " << endl;
                 // quickly go around again marking each as visited
+                cycleID += 1;
+                nodeToCID[cur] = cycleID;
                 cycleCheckVisited.insert(nextl);
                 char cur2 = nextl;
                 for(int j = 0; j < MAX_CYCLE_LENGTH; j ++){
                     cur2 = charEdgesMap[cur2][0];
                     cycleCheckVisited.insert(cur2);
+                    nodeToCID[cur2] = cycleID;
                     if(cur2 == nextl) break;
                 }
 
                 ops ++ ;
                 // require at least one ig. 
-                if(usableTemporaryLetters <= 0){
-                    // not enough
-                    cout << -1 << endl;
-                    return;
-                }
-                // usableTemporaryLetters --;
+                usableTemporaryLetters --;
                 break;
             }
             cur = nextl;
         }
     }
-    /*if(usableTemporaryLetters < 0){
+    if(usableTemporaryLetters < 0){
         // not enough
-        // cout << -1 << endl;
+        cout << -1 << endl;
         return;
-    }*/
+    }
 
     cout << ops << endl; 
 }
