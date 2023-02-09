@@ -75,7 +75,7 @@ void solve(){
         int touches;
         cin >> touches;
         target[2*i + 1] = touches;
-        minTouches = min(minTouches, touches);
+        // minTouches = min(minTouches, touches);
     }
     // We predo a few complete back and forths
    
@@ -95,37 +95,26 @@ void solve(){
         target[i] -= shortcut;
     }*/
 
-    pos = 0;
-    dir = 2;
-    while(true){
-        if(shouldKeepGoing()){
-            cout << getDirChar();
-            int newPos = pos + dir;
-            int betweenPos = pos + dir/2;
-            reality[betweenPos] += 1;
-            // Update state!
-            pos = newPos;
-        }else{
-            dir = -dir;
-            if(!shouldKeepGoing()){
-                // cout << endl << "Change direction failed" << endl;
-                // printStatus();
-                break;
+    // pos = 0;
+    // dir = 2;
+    int i = 1;
+    while(!(i == 1 && target[i] == reality[i])){
+        while(target[i] > reality[i]){
+            cout << "R";
+            reality[i] ++;
+            i += 2;
+        }
+        bool canGoBack = (target[i - 2] - reality[i - 2]) > 1;
+        while(i > 1 && (canGoBack || target[i] == reality[i])){
+            cout << "L";
+            i -= 2;
+            reality[i] ++;
+            if(i > 1){
+                canGoBack = (target[i - 2] - reality[i - 2]) > 1;
             }
         }
     }
-
-    if(meetsExpectations()){
-        cout << endl;
-    }else if(pos == 0){
-        // for(int i = 0; i < N; i ++) cout << "R";
-        string Rrepeat = string(N, 'R');
-        cout << Rrepeat << endl;   
-    }else{
-        // for(int i = 0; i < N; i ++) cout << "L";
-        string Lrepeat = string(N, 'L');
-        cout << Lrepeat << endl;
-    }
+    cout << endl;
 }
 
 int main(int argc, char const *argv[])
