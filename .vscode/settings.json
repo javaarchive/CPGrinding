@@ -93,7 +93,7 @@
         "stacktrace": "cpp",
         "syncstream": "cpp"
     },
-    "editor.cursorSmoothCaretAnimation": true,
+    "editor.cursorSmoothCaretAnimation": "on",
     "workbench.list.smoothScrolling": true,
     "editor.smoothScrolling": true,
     "terminal.integrated.smoothScrolling": true
