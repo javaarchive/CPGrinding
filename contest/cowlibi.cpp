@@ -3,6 +3,9 @@ using namespace std;
 
 int G, N;
 
+map<int, bool> hasTrivialPosition;
+map<int, pair<double,double>> trivialPosition;
+
 struct Trip {
     double startX, startY, endX, endY;
     int timeStart, timeEnd;
@@ -19,11 +22,12 @@ double sqr(double inp){
 double calcDist(pair<double,double> a, pair<double,double> b){
     // if(a.first == b.first) return abs((double) a.second - (double) b.second);
     // if(a.second == b.second) return abs((double) a.first - (double) b.first);
-    return abs((double) a.first - (double) b.first) + ((double) a.second - (double) b.second);
-    // return sqrt(sqr(a.first - b.first) + sqr(a.second - b.second));
+    // return abs((double) a.first - (double) b.first) + ((double) a.second - (double) b.second);
+    return sqrt(sqr(a.first - b.first) + sqr(a.second - b.second));
 }
 
 bool checkDist(pair<double,double> a, pair<double,double> b, int maximum){
+    // cout << calcDist(a,b) << " max: " << maximum << endl;
     return calcDist(a, b) <= maximum;
 }
 
@@ -37,7 +41,7 @@ bool viableDetour(Trip trip, pair<double,double> detourLocation, int detourArriv
     return verdict;
 }
 
-//               location   time
+//               location         time
 vector<pair<pair<double, double>, int>> incidents;
 vector<pair<pair<double, double>, int>> alibis;
 vector<Trip> trips;
@@ -84,11 +88,13 @@ int tripIndexOfTime(int t){
 
 void solve(){
     cin >> G >> N;
-    // Incident
+    // Incident reader
     for(int i = 0; i < G; i++){
         int x, y, t;
         cin >> x >> y >> t;
         incidents.push_back({{x, y}, t});
+        hasTrivialPosition[t] = true;
+        trivialPosition[t] = {x, y};
     }
     sort(incidents.begin(), incidents.end(), [](pair<pair<double,double>,int> a, pair<pair<double,double>,int> b){
         return a.second < b.second;
@@ -96,7 +102,7 @@ void solve(){
     // cout << (incidents[0].second == 100) << endl;
     // cout << (incidents[1].second == 200) << endl;
     // assert(incidents[0].second == 100);
-    // Alibis
+    // Alibis reader
     for(int i = 0; i < N; i++){
         int x, y, t;
         cin >> x >> y >> t;
@@ -117,10 +123,10 @@ void solve(){
         t.timeEnd = timeB;
         double duration = timeB - timeA;
         double distance = calcDist(pointA, pointB);
-        if(duration < distance){
+        /*if(duration < distance){
             cout << N << endl;
             return;
-        }
+        }*/
         trips.push_back(t);
     }
     // Now we have all the trips
@@ -135,7 +141,13 @@ void solve(){
         int time = alibis[i].second;
         int tripIndex = tripIndexOfTime(time);
         // cout << i << " ti " << tripIndex << endl;
-
+        /*if(hasTrivialPosition[time]){
+            pair<double,double> badPos = trivialPosition[time];
+            if(calcDist(alibi, badPos) <= 0){
+                bad ++;
+                continue;
+            }
+        }*/
         if(tripIndex == -1){
             if(G == 1){
                 if(checkDist(alibi, incidents[0].first, abs(time - incidents[0].second))){
@@ -145,13 +157,13 @@ void solve(){
             }else{
                 if(time < trips[0].timeStart){
                     int prequel = trips[0].timeStart - time;
-                    if(prequel >= calcDist(alibi, incidents[0].first)){
+                    if(checkDist(alibi, incidents[0].first, prequel)){
                         // cout << i << " bad prequel " << endl;
                         bad ++;
                     }
                 }else if(time > trips[G - 1].timeEnd){
                     int sequel = time - trips[G - 1].timeEnd;
-                    if(sequel >= calcDist(alibi, incidents[G - 1].first)){
+                    if(checkDist(alibi, incidents[G - 1].first, sequel)){
                         // cout << i << " bad sequel " << endl;
                         bad ++;
                     }
@@ -161,6 +173,7 @@ void solve(){
         }
 
         Trip trip = trips[tripIndex];
+        // cout << i << " " << tripIndex << " " << trip.timeStart << " " << trip.timeEnd << " detouring " << alibi.first << " " << alibi.second << " at: " << time << endl;
         if(viableDetour(trip, alibi, time)){
             // cout << i << " bad " << endl;
             bad ++;
