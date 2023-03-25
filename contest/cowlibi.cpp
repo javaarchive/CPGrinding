@@ -19,16 +19,16 @@ double sqr(double inp){
     return inp2 * inp2;
 }
 
-double calcDist(pair<double,double> a, pair<double,double> b){
+double calcDistSquared(pair<double,double> a, pair<double,double> b){
     // if(a.first == b.first) return abs((double) a.second - (double) b.second);
     // if(a.second == b.second) return abs((double) a.first - (double) b.first);
     // return abs((double) a.first - (double) b.first) + ((double) a.second - (double) b.second);
-    return sqrt(sqr(a.first - b.first) + sqr(a.second - b.second));
+    return sqr(a.first - b.first) + sqr(a.second - b.second);
 }
 
 bool checkDist(pair<double,double> a, pair<double,double> b, int maximum){
     // cout << calcDist(a,b) << " max: " << maximum << endl;
-    return calcDist(a, b) <= maximum;
+    return calcDistSquared(a, b) <= maximum * maximum;
 }
 
 bool viableDetour(Trip trip, pair<double,double> detourLocation, int detourArrival){
@@ -122,8 +122,8 @@ void solve(){
         t.timeStart = timeA;
         t.timeEnd = timeB;
         double duration = timeB - timeA;
-        double distance = calcDist(pointA, pointB);
-        /*if(duration < distance){
+        double distance = calcDistSquared(pointA, pointB);
+        /*if(duration < distance * distance){
             cout << N << endl;
             return;
         }*/
