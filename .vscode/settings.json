@@ -91,7 +91,9 @@
         "semaphore": "cpp",
         "spanstream": "cpp",
         "stacktrace": "cpp",
-        "syncstream": "cpp"
+        "syncstream": "cpp",
+        "queue": "cpp",
+        "stack": "cpp"
     },
     "editor.cursorSmoothCaretAnimation": "on",
     "workbench.list.smoothScrolling": true,
