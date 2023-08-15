@@ -1,0 +1,1 @@
+{"name":"Local: milksum","url":"/media/raymond/2656B9085E2F2A27/Coding/CPGrinding/contest/milksum.cpp","tests":[{"id":1679868228371,"input":"5\n1 10 4 2 6\n3\n2 1\n2 8\n4 5\n","output":"55\n81\n98"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/media/raymond/2656B9085E2F2A27/Coding/CPGrinding/contest/milksum.cpp","group":"local","local":true}
