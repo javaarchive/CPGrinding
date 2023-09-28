@@ -12,6 +12,8 @@ def get_state():
     return [int(s) for s in input().split()]
 
 def build_freq(state):
+    if not state:
+        return defaultdict(lambda: 0)
     freqs = defaultdict(lambda: 0)
     for t in state:
         freqs[t] += 1
@@ -29,13 +31,13 @@ def get_delta_del_type(fa, fb):
             return t
 
 
-def is_same(fa, fb):
+def is_same_as(fa, fb):
     for t in fb:
         if fb[t] != fa[t]:
             return False
-    for t in fa:
-        if fb[t] != fa[t]:
-            return False
+    #  for t in fa:
+    #     if fb[t] != fa[t]:
+    #       return False
     return True
 
 
@@ -51,40 +53,34 @@ T = int(input())
 
 for _ in range(T):
     N = int(input())
-    s1 = get_state()
-    kill()
-    s2 = get_state()
-    new_type = None
-    s3 = None
-    if is_same(build_freq(s1), build_freq(s2)): # scared
-        kill()
-        s3 = get_state()
-        new_type = get_delta_add_type(build_freq(s2), build_freq(s3))
-    else:
-        s3 = s2
-        # early kill type
-        new_type = get_delta_add_type(build_freq(s1), build_freq(s2))
-    # kill every other type
-    victims = []
-    # print("NT",new_type)
-    # flush()
-    for i in range(len(s3)):
-        if s3[i] != new_type:
-            victims.append(i)
-    kill(victims)
-    victims.clear()
-    s4 = get_state()
-    s5 = None
-    if is_same(build_freq(s3), build_freq(s4)):
-        # it may be scared and not willing to change, no worries we can wait it out
-        kill()
-        s5 = get_state()
-    else:
-        s5 = s4
-    # it is time to murder the mimic
-    for i in range(len(s5)):
-        if s5[i] != new_type:
-            print("! " + str(i))
-            flush()
+    prev = None
+    prev_freq = build_freq(prev)
+    ans_found = False
+    for iteration in range(5):
+        state = get_state()
+        cur_freq = build_freq(state)
+        predict_freq = build_freq(state)
+        if prev and not is_same_as(prev_freq,cur_freq):
+            # print(prev_freq, cur_freq)
+            added_type = get_delta_add_type(prev_freq, cur_freq)
+            if cur_freq[added_type] > 1:
+                victims = []
+                for i in range(len(state)):
+                    if added_type != state[i]:
+                        victims.append(i)
+                        predict_freq[state[i]] -= 1
+                kill(victims)
+            else:
+                # found answer
+                # print("DEBUG",added_type)
+                print("! " + str(state.index(added_type) + 1))
+                flush()
+                ans_found = True
+        else:
+            # nothing happended or init
+            kill()
+        prev = state
+        prev_freq = predict_freq
+        if ans_found:
             break
-    # next test case
+    
