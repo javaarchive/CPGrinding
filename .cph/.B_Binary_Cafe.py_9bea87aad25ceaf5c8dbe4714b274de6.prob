@@ -1,0 +1,1 @@
+{"name":"Local: B_Binary_Cafe","url":"/home/smashmaster0045/CPGrinding/B_Binary_Cafe.py","tests":[{"id":1700094221286,"input":"5\n1 2\n2 1\n2 2\n10 2\n179 100","output":"2\n2\n3\n4\n180"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/smashmaster0045/CPGrinding/B_Binary_Cafe.py","group":"local","local":true}
