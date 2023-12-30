@@ -66,3 +66,6 @@ ssh.key
 *.s
 
 rev
+
+# cph thing
+*.bin
