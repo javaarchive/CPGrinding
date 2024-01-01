@@ -27,4 +27,4 @@ int main(int argc, char const *argv[])
     cin >> T;
     while(T --) solve();
     return 0;
-}
+}   
