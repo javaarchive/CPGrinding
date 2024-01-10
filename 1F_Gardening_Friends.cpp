@@ -37,10 +37,23 @@ void redfs(int node, int parent, int signal, int signalOrigin){
     int max2Branch = signalOrigin;
     int max2Value = signal;
 
-    if(signal == -1){
+    // children
+    //cout << "Children of " << node << endl;
+    /*for(int child: graph[node]){
+        cout << child << " ";
+    }
+    cout << endl;*/
+    /*for(int child: graph[node]){
+        if(child == parent) continue;
+        cout << longestPath[child] << " ";
+    }
+    cout << endl;*/
+
+    //if(signal == -1){
         for(int child: graph[node]){
             if(child == parent) continue;
-            int childLp = longestPath[child];
+            int childLp = longestPath[child] + 1;
+            // cout << "lpl " << child << " " << childLp << endl;
             if(childLp > max1Value){
                 max2Branch = max1Branch;
                 max2Value = max1Value;
@@ -52,11 +65,11 @@ void redfs(int node, int parent, int signal, int signalOrigin){
                 max2Branch = child;
             }
         }
-    } else {
+    //} else {
         // max1Branch = signal; // use a node from higher up
-    }
-
-    // cout << "priorities " << node << " " << max1Branch << " " << max2Branch << endl;
+    //}
+    // cout << "max lps " << max1Value << " " << max2Value << endl;
+    //cout << "priorities n" << node << " n" << max1Branch << " n" << max2Branch << endl;
 
     // tell our children if we have an adjacent branch ready to be used
 
@@ -66,15 +79,15 @@ void redfs(int node, int parent, int signal, int signalOrigin){
     for(int child: children){
         if(child == parent) continue;
         if(child == max1Branch){
-            redfs(child, node, max2Value, max2Branch);
+            redfs(child, node, max2Value + 1, max2Branch);
         }else{
-            redfs(child, node, max1Value, max1Branch);
+            redfs(child, node, max1Value + 1, max1Branch);
         }
     }
 
     // update ourself
 
-    otherTable[node] = signal;
+    otherTable[node] = signal + 1;
     otherOrigin[node] = signalOrigin;
 }
 
@@ -132,6 +145,17 @@ void solve(){
 
     cout << endl;*/
 
+    /*cout << "otherTable: ";
+    for(int i = 1; i <= N; i ++){
+        cout << otherTable[i] << " ";
+    }
+    cout << endl;
+    cout << "otherOrigin: ";
+    for(int i = 1; i <= N; i ++){
+        cout << otherOrigin[i] << " ";
+    }
+    cout << endl;*/
+
     /*if(rootPathLens.size() == 0){
         // wtf we're lonely?
         // impossible but ok
@@ -157,8 +181,9 @@ void solve(){
            
             long long other = 0;
             if(root != INIT_ROOT && otherOrigin[root] != -1){
-                // cout << " other calc use " << depths[root] << " - " << depths[otherOrigin[root]] << " + 2 + " << otherTable[root] << " other origin " << otherOrigin[root] << " we are currently " << depths[root] << " deep" << endl;
-                other = (depths[root] - depths[otherOrigin[root]]) + 2 + otherTable[root];
+                // cout << "root " << root << " ot->" << otherTable[root] << endl;
+                // cout << " other calc use " << depths[root] << " - " << depths[otherOrigin[root]] << " + 1 + " << otherTable[root] << " other origin " << otherOrigin[root] << " we are currently " << depths[root] << " deep" << endl;
+                other = otherTable[root] - 1;
                 // cout << " calculated: " << other << endl;
             }
             /*if(origins[root] == adjLongPaths[0].second){
@@ -182,7 +207,7 @@ void solve(){
 
 }
 
-signed main(int argc, char const *argv[])
+signed main(signed argc, char const *argv[])
 {
     int T;
     cin >> T;
