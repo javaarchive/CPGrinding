@@ -92,8 +92,8 @@ void solve(){
         graph[a].push_back(b);
         graph[b].push_back(a);
     }
-    fill(origins, origins + MAXN, -1);
-    fill(depths, depths + MAXN, -1);
+    // fill(origins, origins + MAXN, -1);
+    // fill(depths, depths + MAXN, -1);
 
     // vector<long long> rootPathLens;
     // vector<pair<long long, int>> adjLongPaths;
